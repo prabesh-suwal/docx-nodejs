@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOCX Template Engine</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 2rem;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .file-upload-label:hover {
+            border-color: #5a67d8;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .file-upload-label i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .template-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .template-card {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .template-card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .template-meta {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .validation-results {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .json-editor {
+            font-family: 'Courier New', monospace;
+            min-height: 300px;
+            resize: vertical;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border-color: #b8daff;
+            color: #0c5460;
+        }
+
+        .statistics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e1e5e9;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+
+        .example-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .template-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .statistics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-file-word"></i> DOCX Template Engine</h1>
+            <p>Advanced template processing with variables, conditions, loops, and tables</p>
+        </div>
+
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('upload', this)">
+                    <i class="fas fa-upload"></i> Upload Template
+                </button>
+                <button class="tab" onclick="switchTab('templates', this)">
+                    <i class="fas fa-list"></i> Templates
+                </button>
+                <button class="tab" onclick="switchTab('generate', this)">
+                    <i class="fas fa-cogs"></i> Generate
+                </button>
+                <button class="tab" onclick="switchTab('examples', this)">
+                    <i class="fas fa-book"></i> Examples
+                </button>
+            </div>
+
+            <!-- Upload Template Tab -->
+            <div id="upload-tab" class="tab-content active">
+                <h2>Upload New Template</h2>
+                <form id="upload-form" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Template File (.docx)</label>
+                        <div class="file-upload">
+                            <input type="file" id="template-file" accept=".docx" required>
+                            <label for="template-file" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <div>Click to select DOCX file or drag and drop</div>
+                                <small>Maximum file size: 10MB</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="template-name">Template Name</label>
+                        <input type="text" id="template-name" class="form-control" placeholder="Enter template name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="template-description">Description</label>
+                        <textarea id="template-description" class="form-control" rows="3" placeholder="Describe the template purpose and usage"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="template-author">Author</label>
+                        <input type="text" id="template-author" class="form-control" placeholder="Template author">
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <i class="fas fa-upload"></i> Upload & Validate Template
+                    </button>
+                </form>
+
+                <div id="upload-results" style="display: none;"></div>
+            </div>
+
+            <!-- Templates List Tab -->
+            <div id="templates-tab" class="tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2>Template Library</h2>
+                    <button class="btn btn-secondary" onclick="refreshTemplates()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                
+                <div id="templates-list" class="template-list">
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #667eea;"></i>
+                        <p>Loading templates...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Documents Tab -->
+            <div id="generate-tab" class="tab-content">
+                <h2>Generate Document</h2>
+                
+                <div class="form-group">
+                    <label for="selected-template">Select Template</label>
+                    <select id="selected-template" class="form-control">
+                        <option value="">Choose a template...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="json-data">JSON Data</label>
+                    <textarea id="json-data" class="form-control json-editor" placeholder="Enter your JSON data here..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn" onclick="validateData()">
+                        <i class="fas fa-check-circle"></i> Validate Data
+                    </button>
+                    <button class="btn" onclick="generateDocument()">
+                        <i class="fas fa-file-download"></i> Generate Document
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadSampleData()">
+                        <i class="fas fa-flask"></i> Load Sample Data
+                    </button>
+                </div>
+
+                <div id="generation-results" style="display: none;"></div>
+            </div>
+
+            <!-- Examples Tab -->
+            <div id="examples-tab" class="tab-content">
+                <h2>Template Syntax Examples</h2>
+
+                <div class="example-section">
+                    <h3><i class="fas fa-dollar-sign"></i> Variables</h3>
+                    <p>Basic variable replacement with formatting options:</p>
+                    <div class="code-block">Hello, ${user.firstName}!
+Your balance: ${account.balance|currency}
+Today: ${currentDate|date:YYYY-MM-DD}
+Formatted text: ${message|bold|italic|size:14}</div>
+                </div>
+
+                <div class="example-section">
+                    <h3><i class="fas fa-question-circle"></i> Conditions</h3>
+                    <p>Conditional content based on data values:</p>
+                    <div class="code-block">${#if user.age > 18}
+    You are eligible for this service.
+${#else}
+    You must be 18 or older.
+${/if}
+
+${#if account.balance > 1000 and account.status == 'active'}
+    Premium features available!
+${/if}</div>
+                </div>
+
+                <div class="example-section">
+                    <h3><i class="fas fa-loop"></i> Loops</h3>
+                    <p>Iterate over arrays and nested data:</p>
+                    <div class="code-block">Customer Orders:
+${#each orders}
+  Order #${this.id}: ${this.amount|currency}
+  Items:
+  ${#each this.items}
+    - ${this.name} (${this.quantity}x)
+  ${/each}
+${/each}</div>
+                </div>
+
+                <div class="example-section">
+                    <h3><i class="fas fa-table"></i> Tables</h3>
+                    <p>Auto-expanding table rows:</p>
+                    <div class="code-block">| Customer Name    | Order Total      | Status          |
+|------------------|------------------|-----------------|
+${#each customers}
+| ${this.name}     | ${this.total|currency} | ${this.status} |
+${/each}</div>
+                </div>
+
+                <div class="example-section">
+                    <h3><i class="fas fa-calculator"></i> Aggregations</h3>
+                    <p>Calculate sums, averages, and counts:</p>
+                    <div class="code-block">Total Revenue: ${orders|sum:amount|currency}
+Order Count: ${orders|count}
+Average Order: ${orders|avg:amount|currency}</div>
+                </div>
+
+                <div class="example-section">
+                    <h3><i class="fas fa-database"></i> Sample JSON Data</h3>
+                    <div class="code-block">{
+  "user": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "age": 30,
+    "email": "john@example.com"
+  },
+  "orders": [
+    {
+      "id": "ORD001",
+      "amount": 299.99,
+      "status": "completed",
+      "items": [
+        {"name": "Product A", "quantity": 2},
+        {"name": "Product B", "quantity": 1}
+      ]
+    }
+  ],
+  "currentDate": "2025-09-02",
+  "account": {
+    "balance": 1500.00,
+    "status": "active"
+  }
+}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'upload';
+        let templates = [];
+
+        // Tab switching functionality
+        function switchTab(tabName, buttonElement) {
+            console.log('Switching to tab:', tabName);
+            
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            const tabContent = document.getElementById(tabName + '-tab');
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
+            
+            // Add active class to clicked tab
+            if (buttonElement) {
+                buttonElement.classList.add('active');
+            }
+            
+            currentTab = tabName;
+            
+            // Load data when switching to certain tabs
+            if (tabName === 'templates') {
+                loadTemplates();
+            } else if (tabName === 'generate') {
+                loadTemplatesForGeneration();
+            }
+        }
+
+        // File upload handling
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            
+            const fileInput = document.getElementById('template-file');
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const label = document.querySelector('.file-upload-label div');
+                        if (label) {
+                            label.textContent = `Selected: ${file.name}`;
+                        }
+                        
+                        // Auto-fill template name if empty
+                        const nameInput = document.getElementById('template-name');
+                        if (nameInput && !nameInput.value) {
+                            nameInput.value = file.name.replace('.docx', '');
+                        }
+                    }
+                });
+            }
+
+            // Template upload form submission
+            const uploadForm = document.getElementById('upload-form');
+            if (uploadForm) {
+                uploadForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    console.log('Form submitted');
+                    
+                    const fileInput = document.getElementById('template-file');
+                    const file = fileInput.files[0];
+                    
+                    if (!file) {
+                        showAlert('Please select a template file', 'danger');
+                        return;
+                    }
+                    
+                    const formData = new FormData();
+                    formData.append('template', file);
+                    formData.append('name', document.getElementById('template-name').value || file.name);
+                    formData.append('description', document.getElementById('template-description').value);
+                    formData.append('author', document.getElementById('template-author').value);
+                    
+                    const submitBtn = uploadForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<span class="loading"></span>Uploading...';
+                    submitBtn.disabled = true;
+                    
+                    try {
+                        console.log('Sending request to /api/templates');
+                        const response = await fetch('/api/templates', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        const result = await response.json();
+                        console.log('Upload result:', result);
+                        
+                        if (response.ok) {
+                            showUploadResults(result);
+                            uploadForm.reset();
+                            const label = document.querySelector('.file-upload-label div');
+                            if (label) {
+                                label.textContent = 'Click to select DOCX file or drag and drop';
+                            }
+                        } else {
+                            showAlert(result.error || 'Upload failed', 'danger');
+                        }
+                    } catch (error) {
+                        console.error('Upload error:', error);
+                        showAlert('Network error: ' + error.message, 'danger');
+                    } finally {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+
+            // Set up drag and drop for file upload
+            const fileUpload = document.querySelector('.file-upload');
+            if (fileUpload) {
+                fileUpload.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    fileUpload.style.background = 'rgba(102, 126, 234, 0.15)';
+                });
+                
+                fileUpload.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    fileUpload.style.background = 'rgba(102, 126, 234, 0.05)';
+                });
+                
+                fileUpload.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    fileUpload.style.background = 'rgba(102, 126, 234, 0.05)';
+                    
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const fileInput = document.getElementById('template-file');
+                        if (fileInput) {
+                            fileInput.files = files;
+                            const event = new Event('change');
+                            fileInput.dispatchEvent(event);
+                        }
+                    }
+                });
+            }
+            
+            console.log('Initialization complete');
+        });
+
+        function showUploadResults(result) {
+            const resultsDiv = document.getElementById('upload-results');
+            if (!resultsDiv) return;
+            
+            const validation = result.validation;
+            
+            let html = `
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> Template uploaded successfully!
+                    <strong>${result.name}</strong> (ID: ${result.id})
+                </div>
+                
+                <div class="validation-results">
+                    <h3>Validation Results</h3>
+                    
+                    <div class="statistics-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${validation.statistics.totalPlaceholders}</div>
+                            <div class="stat-label">Variables</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${validation.statistics.totalConditions}</div>
+                            <div class="stat-label">Conditions</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${validation.statistics.totalLoops}</div>
+                            <div class="stat-label">Loops</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${validation.statistics.totalAggregations}</div>
+                            <div class="stat-label">Aggregations</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${validation.statistics.complexityScore}</div>
+                            <div class="stat-label">Complexity</div>
+                        </div>
+                    </div>
+                    
+                    ${validation.errors.length > 0 ? `
+                        <h4><i class="fas fa-exclamation-triangle"></i> Errors</h4>
+                        <div class="validation-item">
+                            ${validation.errors.map(error => `<span class="badge badge-danger">${error}</span>`).join(' ')}
+                        </div>
+                    ` : ''}
+                    
+                    ${validation.warnings.length > 0 ? `
+                        <h4><i class="fas fa-exclamation-circle"></i> Warnings</h4>
+                        <div class="validation-item">
+                            ${validation.warnings.map(warning => `<span class="badge badge-warning">${warning}</span>`).join(' ')}
+                        </div>
+                    ` : ''}
+                    
+                    ${validation.placeholders.length > 0 ? `
+                        <h4><i class="fas fa-tags"></i> Variables Found</h4>
+                        ${validation.placeholders.map(p => `
+                            <div class="validation-item">
+                                <code>${p.raw}</code>
+                                ${p.formatters.length > 0 ? `<small>Formatters: ${p.formatters.join(', ')}</small>` : ''}
+                            </div>
+                        `).join('')}
+                    ` : ''}
+                </div>
+            `;
+            
+            resultsDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+        }
+
+        async function loadTemplates() {
+            try {
+                console.log('Loading templates...');
+                const response = await fetch('/api/templates');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    templates = data.templates || [];
+                    displayTemplates(templates);
+                } else {
+                    showAlert('Failed to load templates: ' + data.error, 'danger');
+                }
+            } catch (error) {
+                console.error('Load templates error:', error);
+                showAlert('Network error: ' + error.message, 'danger');
+            }
+        }
+
+        function displayTemplates(templateList) {
+            const container = document.getElementById('templates-list');
+            if (!container) return;
+            
+            if (templateList.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <i class="fas fa-file-alt" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                        <h3>No templates found</h3>
+                        <p>Upload your first template to get started.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = templateList.map(template => `
+                <div class="template-card">
+                    <h3>${template.name}</h3>
+                    <div class="template-meta">
+                        <div><i class="fas fa-user"></i> ${template.author}</div>
+                        <div><i class="fas fa-calendar"></i> ${new Date(template.createdAt).toLocaleDateString()}</div>
+                        <div><i class="fas fa-code"></i> Version ${template.version}</div>
+                        <div><i class="fas fa-chart-line"></i> Complexity: ${template.validation.statistics.complexityScore}</div>
+                    </div>
+                    <p>${template.description}</p>
+                    
+                    <div style="margin: 1rem 0;">
+                        <span class="badge badge-info">${template.metadata.placeholders.length} Variables</span>
+                        <span class="badge badge-info">${template.metadata.conditions.length} Conditions</span>
+                        <span class="badge badge-info">${template.metadata.loops.length} Loops</span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+                        <button class="btn" style="flex: 1;" onclick="useTemplate('${template._id}')">
+                            <i class="fas fa-play"></i> Use Template
+                        </button>
+                        <button class="btn btn-secondary" onclick="validateTemplate('${template._id}')">
+                            <i class="fas fa-check"></i> Validate
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteTemplate('${template._id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function loadTemplatesForGeneration() {
+            const select = document.getElementById('selected-template');
+            if (!select) return;
+            
+            if (templates.length === 0) {
+                try {
+                    const response = await fetch('/api/templates');
+                    const data = await response.json();
+                    templates = data.templates || [];
+                } catch (error) {
+                    console.error('Failed to load templates:', error);
+                }
+            }
+            
+            select.innerHTML = '<option value="">Choose a template...</option>' +
+                templates.map(t => `<option value="${t._id}">${t.name}</option>`).join('');
+        }
+
+        function useTemplate(templateId) {
+            switchTab('generate', document.querySelector('[onclick*="generate"]'));
+            const select = document.getElementById('selected-template');
+            if (select) {
+                select.value = templateId;
+            }
+        }
+
+        async function validateTemplate(templateId) {
+            try {
+                const response = await fetch(`/api/templates/${templateId}/validate`, {
+                    method: 'POST'
+                });
+                
+                const validation = await response.json();
+                
+                if (response.ok) {
+                    showValidationModal(validation);
+                } else {
+                    showAlert('Validation failed: ' + validation.error, 'danger');
+                }
+            } catch (error) {
+                showAlert('Network error: ' + error.message, 'danger');
+            }
+        }
+
+        async function deleteTemplate(templateId) {
+            if (!confirm('Are you sure you want to delete this template?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/templates/${templateId}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showAlert('Template deleted successfully', 'success');
+                    loadTemplates(); // Refresh the list
+                } else {
+                    showAlert('Delete failed: ' + result.error, 'danger');
+                }
+            } catch (error) {
+                showAlert('Network error: ' + error.message, 'danger');
+            }
+        }
+
+        function validateData() {
+            const dataText = document.getElementById('json-data').value.trim();
+            
+            if (!dataText) {
+                showAlert('Please enter JSON data', 'danger');
+                return;
+            }
+            
+            try {
+                const data = JSON.parse(dataText);
+                showAlert('JSON data is valid!', 'success');
+                
+                // Show data structure preview
+                const preview = analyzeDataStructure(data);
+                const resultsDiv = document.getElementById('generation-results');
+                if (resultsDiv) {
+                    resultsDiv.innerHTML = `
+                        <div class="alert alert-info">
+                            <h4>Data Structure Analysis</h4>
+                            <div class="code-block">${preview}</div>
+                        </div>
+                    `;
+                    resultsDiv.style.display = 'block';
+                }
+                
+            } catch (error) {
+                showAlert('Invalid JSON: ' + error.message, 'danger');
+            }
+        }
+
+        function analyzeDataStructure(obj, indent = 0) {
+            const spaces = '  '.repeat(indent);
+            let result = '';
+            
+            if (Array.isArray(obj)) {
+                result += `${spaces}Array (${obj.length} items)\n`;
+                if (obj.length > 0) {
+                    result += analyzeDataStructure(obj[0], indent + 1);
+                }
+            } else if (obj && typeof obj === 'object') {
+                for (const [key, value] of Object.entries(obj)) {
+                    if (Array.isArray(value)) {
+                        result += `${spaces}${key}: Array (${value.length} items)\n`;
+                        if (value.length > 0) {
+                            result += analyzeDataStructure(value[0], indent + 1);
+                        }
+                    } else if (value && typeof value === 'object') {
+                        result += `${spaces}${key}: Object\n`;
+                        result += analyzeDataStructure(value, indent + 1);
+                    } else {
+                        result += `${spaces}${key}: ${typeof value} = ${JSON.stringify(value)}\n`;
+                    }
+                }
+            }
+            
+            return result;
+        }
+
+        async function generateDocument() {
+            const templateId = document.getElementById('selected-template').value;
+            const dataText = document.getElementById('json-data').value.trim();
+            
+            if (!templateId) {
+                showAlert('Please select a template', 'danger');
+                return;
+            }
+            
+            if (!dataText) {
+                showAlert('Please enter JSON data', 'danger');
+                return;
+            }
+            
+            let data;
+            try {
+                data = JSON.parse(dataText);
+            } catch (error) {
+                showAlert('Invalid JSON: ' + error.message, 'danger');
+                return;
+            }
+            
+            // Find the generate button
+            const generateBtn = document.querySelector('button[onclick="generateDocument()"]');
+            if (!generateBtn) return;
+            
+            const originalText = generateBtn.innerHTML;
+            generateBtn.innerHTML = '<span class="loading"></span>Generating...';
+            generateBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/documents/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        templateId: templateId,
+                        data: data,
+                        options: {
+                            addPageNumbers: false,
+                            outputFormat: 'docx'
+                        }
+                    })
+                });
+                
+                if (response.ok) {
+                    // Handle file download
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `generated_document_${Date.now()}.docx`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    
+                    showAlert('Document generated successfully!', 'success');
+                } else {
+                    const error = await response.json();
+                    showAlert('Generation failed: ' + error.error, 'danger');
+                }
+            } catch (error) {
+                showAlert('Network error: ' + error.message, 'danger');
+            } finally {
+                generateBtn.innerHTML = originalText;
+                generateBtn.disabled = false;
+            }
+        }
+
+        function loadSampleData() {
+            const sampleData = {
+                "user": {
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "age": 30,
+                    "email": "john@example.com"
+                },
+                "orders": [
+                    {
+                        "id": "ORD001",
+                        "amount": 299.99,
+                        "status": "completed",
+                        "date": "2025-08-15",
+                        "items": [
+                            {"name": "Product A", "quantity": 2, "price": 149.99},
+                            {"name": "Product B", "quantity": 1, "price": 149.99}
+                        ]
+                    },
+                    {
+                        "id": "ORD002",
+                        "amount": 159.50,
+                        "status": "pending",
+                        "date": "2025-09-01",
+                        "items": [
+                            {"name": "Product C", "quantity": 1, "price": 159.50}
+                        ]
+                    }
+                ],
+                "currentDate": "2025-09-02",
+                "account": {
+                    "balance": 1500.00,
+                    "status": "active",
+                    "type": "premium"
+                },
+                "company": {
+                    "name": "ACME Corporation",
+                    "address": "123 Business St, City, State 12345",
+                    "phone": "+1-555-0123"
+                }
+            };
+            
+            const jsonTextarea = document.getElementById('json-data');
+            if (jsonTextarea) {
+                jsonTextarea.value = JSON.stringify(sampleData, null, 2);
+                showAlert('Sample data loaded!', 'info');
+            }
+        }
+
+        function refreshTemplates() {
+            loadTemplates();
+            showAlert('Templates refreshed!', 'info');
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 
+                              type === 'danger' ? 'fa-exclamation-triangle' : 
+                              type === 'info' ? 'fa-info-circle' : 'fa-exclamation-circle'}"></i>
+                ${message}
+            `;
+            
+            // Insert at the top of current tab content
+            const activeTab = document.querySelector('.tab-content.active');
+            if (activeTab) {
+                activeTab.insertBefore(alertDiv, activeTab.firstChild);
+            }
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 5000);
+        }
+
+        function showValidationModal(validation) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.8); z-index: 1000;
+                display: flex; align-items: center; justify-content: center;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 15px; max-width: 800px; max-height: 90vh; overflow-y: auto; width: 100%;">
+                    <div style="padding: 2rem; border-bottom: 1px solid #eee;">
+                        <h2>Template Validation Results</h2>
+                        <button onclick="this.closest('div').parentNode.parentNode.remove()" style="float: right; margin-top: -2rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                    </div>
+                    
+                    <div style="padding: 2rem;">
+                        <div class="statistics-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">${validation.statistics.totalPlaceholders}</div>
+                                <div class="stat-label">Variables</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${validation.statistics.totalConditions}</div>
+                                <div class="stat-label">Conditions</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${validation.statistics.totalLoops}</div>
+                                <div class="stat-label">Loops</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${validation.statistics.totalErrors}</div>
+                                <div class="stat-label">Errors</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${validation.statistics.totalWarnings}</div>
+                                <div class="stat-label">Warnings</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${validation.statistics.complexityScore}</div>
+                                <div class="stat-label">Complexity</div>
+                            </div>
+                        </div>
+                        
+                        ${validation.placeholders.length > 0 ? `
+                            <h3>Variables (${validation.placeholders.length})</h3>
+                            <div style="max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                ${validation.placeholders.map(p => `
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <code>${p.raw}</code>
+                                        ${p.formatters.length > 0 ? `<small> (${p.formatters.join(', ')})</small>` : ''}
+                                        ${p.warnings.length > 0 ? `<br><small style="color: orange;">${p.warnings.join(', ')}</small>` : ''}
+                                        ${p.errors.length > 0 ? `<br><small style="color: red;">${p.errors.join(', ')}</small>` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                        
+                        ${validation.conditions.length > 0 ? `
+                            <h3>Conditions (${validation.conditions.length})</h3>
+                            <div style="max-height: 150px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                ${validation.conditions.map(c => `
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <code>\${#if ${c.expression}}</code>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                        
+                        ${validation.loops.length > 0 ? `
+                            <h3>Loops (${validation.loops.length})</h3>
+                            <div style="max-height: 150px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                ${validation.loops.map(l => `
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <code>\${#each ${l.array}}</code>
+                                        ${l.nested ? '<span class="badge badge-warning">Nested</span>' : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            modal.className = 'modal';
+            document.body.appendChild(modal);
+            
+            // Close on outside click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

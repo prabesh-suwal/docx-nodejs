@@ -1,0 +1,30 @@
+{
+  "name": "docx-template-engine",
+  "version": "1.0.0",
+  "description": "Advanced DOCX templating system with variables, conditions, loops, and tables",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "docx": "^8.5.0",
+    "pizzip": "^3.1.4",
+    "docxtemplater": "^3.42.0",
+    "mongodb": "^6.3.0",
+    "uuid": "^9.0.1",
+    "moment": "^2.29.4",
+    "jszip": "^3.10.1",
+    "xml2js": "^0.6.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0"
+  }
+}
