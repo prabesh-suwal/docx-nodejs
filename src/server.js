@@ -48,10 +48,12 @@ class DocxTemplateServer {
 
     async connectDatabase() {
         try {
-            const client = new MongoClient(this.mongoUrl);
-            await client.connect();
-            this.db = client.db();
-            console.log('Connected to MongoDB');
+                    console.log('Skipping MongoDB connection for testing');
+
+            // const client = new MongoClient(this.mongoUrl);
+            // await client.connect();
+            // this.db = client.db();
+            // console.log('Connected to MongoDB');
         } catch (error) {
             console.error('MongoDB connection error:', error);
             process.exit(1);

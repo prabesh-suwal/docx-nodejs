@@ -122,7 +122,12 @@ class ExpressionEvaluator {
             .replace(/\bnot\b/g, '!')
             .replace(/\bis\b/g, '==')
             .replace(/\bisn't\b/g, '!=')
-            .replace(/\bequals\b/g, '==');
+            .replace(/\bequals\b/g, '==')
+            .replace(/&gt;/g, '>')
+            .replace(/&lt;/g, '<')
+            .replace(/&amp;/g, '&')
+            .replace(/&quot;/g, '"')
+            .replace(/&apos;/g, "'");
     }
 
     getNestedProperty(obj, path) {
