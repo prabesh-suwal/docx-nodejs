@@ -4,6 +4,10 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 const multer = require('multer');
+const fs = require("fs");
+require("dotenv-flow").config();
+
+
 const { MongoClient } = require('mongodb');
 const TemplateManager = require('./managers/TemplateManager');
 const DocumentGenerator = require('./generators/DocumentGenerator');
@@ -13,9 +17,12 @@ class DocxTemplateServer {
     constructor() {
         this.app = express();
         this.port = process.env.PORT || 3000;
+        this.BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${this.port}`;
+
         this.mongoUrl = process.env.MONGO_URL || 'mongodb+srv://prabeshsuwal1234:Kathmandu-123@cluster0.1teqdim.mongodb.net/docx_templates';
         this.db = null;
-        
+        this.app.use(express.static(path.join(__dirname, "public")));
+
         this.setupMiddleware();
         this.setupRoutes();
     }
@@ -61,15 +68,33 @@ class DocxTemplateServer {
     }
 
     setupRoutes() {
+        this.app.all('*', (req, res, next) => {
+            console.log(`${req.method} ${req.url} - ${new Date().toISOString()}`);
+            next();
+        });
+
         // Initialize managers
         const templateManager = new TemplateManager();
         const documentGenerator = new DocumentGenerator();
         const templateValidator = new TemplateValidator();
 
         // UI Routes
-        this.app.get('/', (req, res) => {
-            res.sendFile(path.join(__dirname, 'public', 'index.html'));
-        });
+        // this.app.get('/', (req, res) => {
+        //     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+        // });
+
+        // Serve index.html with injected BACKEND_URL
+            this.app.get("/", (req, res) => {
+                console.log('Serving index.html with BACKEND_URL:', this.BACKEND_URL);
+                const fs = require("fs");
+                let html = fs.readFileSync(path.join(__dirname, "public", "index.html"), "utf-8");
+                html = html.replace("{{BACKEND_URL}}", "asdasd");
+                res.send(html);
+            });
+
+            // this.app.listen(this.port, () => {
+            // console.log(`✅ Server running on ${this.BACKEND_URL}`);
+            // });
 
         // Template Management Routes
         this.app.post('/api/templates', this.upload.single('template'), async (req, res) => {
@@ -597,6 +622,7 @@ this.app.post('/api/validate-template', this.upload.single('template'), async (r
 
 // Health check endpoint
 this.app.get('/api/health', (req, res) => {
+     console.log('Serving index.html with BACKEND_URL:', process.env.BACKEND_URL);
     res.json({
         status: 'healthy',
         timestamp: new Date().toISOString(),

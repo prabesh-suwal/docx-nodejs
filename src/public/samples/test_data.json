@@ -1,0 +1,357 @@
+{
+  "bank": {
+    "name": "Himalayan Bank Limited",
+	 "nameNepali": "हिमालयन बैंक लिमिटेड",
+    "address": "Kamaladi, Kathmandu, Nepal",
+    "phone": "+977-1-4411681",
+    "email": "info@himalayanbank.com",
+    "licenseNumber": "NRB/BFI/001/2051",
+    "registrationNumber": "1195/048/049"
+  },
+  "borrower": {
+    "name": "Ram Bahadur Thapa",
+    "citizenshipNumber": "15-02-75-12345",
+    "address": "Ward No. 5, Bhaktapur Municipality, Bhaktapur",
+    "phone": "+977-9841234567",
+    "email": "rambahadur.thapa@gmail.com",
+    "occupation": "Senior Software Engineer",
+    "monthlyIncome": 125000
+  },
+  "guarantors": [
+    {
+      "name": "Sita Devi Thapa",
+      "citizenshipNumber": "15-02-75-12346",
+      "address": "Ward No. 5, Bhaktapur Municipality, Bhaktapur",
+      "phone": "+977-9841234568",
+      "relationship": "Spouse",
+      "monthlyIncome": 85000
+    },
+    {
+      "name": "Krishna Prasad Sharma",
+      "citizenshipNumber": "27-01-78-98765",
+      "address": "Lazimpat, Kathmandu Metropolitan City-2",
+      "phone": "+977-9851098765",
+      "relationship": "Business Partner",
+      "monthlyIncome": 150000
+    }
+  ],
+  "loan": {
+    "agreementNumber": "HBL/AUTO/2025/001234",
+    "agreementDate": "2025-09-02T10:30:00Z",
+    "branch": "Kamaladi Branch",
+    "type": "Secured Loan",
+    "principalAmount": 3500000.56789,
+    "interestRate": 0.095,
+    "interestType": "Fixed",
+    "termMonths": 84,
+    "termYears": 7,
+    "purpose": "Vehicle Purchase - Toyota Land Cruiser Prado",
+    "emi": 58750,
+    "firstPaymentDate": "2025-10-02",
+    "finalPaymentDate": "2032-08-02",
+    "totalAmount": 4935000,
+    "paymentDay": 2,
+    "penaltyRate": 0.02,
+    "prepaymentAllowed": true,
+    "prepaymentLockPeriod": 12,
+    "prepaymentCharge": 0.01,
+    "approvedBy": "Mohan Kumar Shrestha",
+    "approverDesignation": "Branch Manager"
+  },
+  "collaterals": [
+    {
+      "type": "Vehicle",
+      "description": "2025 Toyota Land Cruiser Prado VX 2.8L Diesel 4WD",
+      "estimatedValue": 4200000,
+      "location": "Kathmandu, Nepal",
+      "registrationNumber": "Ba 12 Pa 5678"
+    },
+    {
+      "type": "Property",
+      "description": "Land and House at Bhaktapur (2 Ropani 5 Aana)",
+      "estimatedValue": 8500000,
+      "location": "Ward No. 5, Bhaktapur Municipality",
+      "registrationNumber": "15-02-75-0987"
+    }
+  ],
+  "paymentSchedule": [
+    {
+      "month": 1,
+      "paymentDate": "2025-10-02",
+      "principal": 31042,
+      "interest": 27708,
+      "emiAmount": 58750,
+      "outstanding": 3468958
+    },
+    {
+      "month": 2,
+      "paymentDate": "2025-11-02", 
+      "principal": 31288,
+      "interest": 27462,
+      "emiAmount": 58750,
+      "outstanding": 3437670
+    },
+    {
+      "month": 3,
+      "paymentDate": "2025-12-02",
+      "principal": 31536,
+      "interest": 27214,
+      "emiAmount": 58750,
+      "outstanding": 3406134
+    },
+    {
+      "month": 4,
+      "paymentDate": "2026-01-02",
+      "principal": 31786,
+      "interest": 27964,
+      "emiAmount": 58750,
+      "outstanding": 3374348
+    },
+    {
+      "month": 5,
+      "paymentDate": "2026-02-02",
+      "principal": 32037,
+      "interest": 26713,
+      "emiAmount": 58750,
+      "outstanding": 3342311
+    },
+    {
+      "month": 6,
+      "paymentDate": "2026-03-02",
+      "principal": 32291,
+      "interest": 26459,
+      "emiAmount": 58750,
+      "outstanding": 3310020
+    }
+  ],
+  "fees": [
+    {
+      "type": "Processing Fee",
+      "amount": 17500,
+      "percentage": 0.005,
+      "total": 17500
+    },
+    {
+      "type": "Documentation Fee",
+      "amount": 2500,
+      "percentage": null,
+      "total": 2500
+    },
+    {
+      "type": "Valuation Fee",
+      "amount": 5000,
+      "percentage": null,
+      "total": 5000
+    },
+    {
+      "type": "Legal Fee",
+      "amount": 7500,
+      "percentage": null,
+      "total": 7500
+    },
+    {
+      "type": "Insurance Premium",
+      "amount": 15000,
+      "percentage": null,
+      "total": 15000
+    }
+  ],
+  "insurance": {
+    "required": true,
+    "type": "Comprehensive Vehicle Insurance + Loan Protection",
+    "coverageAmount": 4200000,
+    "premium": 35000,
+    "frequency": "Annual",
+    "beneficiary": "Himalayan Bank Limited"
+  },
+  "kycDocuments": [
+    {
+      "documentType": "Citizenship Certificate",
+      "documentNumber": "15-02-75-12345",
+      "issuedDate": "2018-04-15"
+    },
+    {
+      "documentType": "PAN Certificate",
+      "documentNumber": "123456789",
+      "issuedDate": "2019-07-20"
+    },
+    {
+      "documentType": "Salary Certificate",
+      "documentNumber": "EMP/2025/0156",
+      "issuedDate": "2025-08-15"
+    },
+    {
+      "documentType": "Bank Statement",
+      "documentNumber": "HBL/STMT/2025/789",
+      "issuedDate": "2025-08-30"
+    },
+    {
+      "documentType": "Vehicle Registration",
+      "documentNumber": "Ba 12 Pa 5678",
+      "issuedDate": "2025-08-25"
+    }
+  ],
+  "bankOfficials": [
+    {
+      "role": "Branch Manager",
+      "name": "Mohan Kumar Shrestha",
+      "employeeId": "HBL001234"
+    },
+    {
+      "role": "Credit Officer",
+      "name": "Sunita Maharjan",
+      "employeeId": "HBL005678"
+    },
+    {
+      "role": "Operations Officer",
+      "name": "Rajesh Khadka",
+      "employeeId": "HBL009012"
+    }
+  ],
+  "witness1": {
+    "name": "Bikash Shrestha",
+    "address": "Pulchowk, Lalitpur Metropolitan City-3"
+  },
+  "witness2": {
+    "name": "Anita Pradhan",
+    "address": "Baneshwor, Kathmandu Metropolitan City-10"
+  },
+  "orders": [
+    {
+      "id": "ORD-2025-001",
+      "amount": 15000,
+      "status": "completed",
+      "date": "2025-08-15",
+      "customer": "Acme Corp"
+    },
+    {
+      "id": "ORD-2025-002", 
+      "amount": 8500,
+      "status": "pending",
+      "date": "2025-08-20",
+      "customer": "Beta Industries"
+    },
+    {
+      "id": "ORD-2025-003",
+      "amount": 22000,
+      "status": "completed", 
+      "date": "2025-09-01",
+      "customer": "Gamma Systems"
+    },
+    {
+      "id": "ORD-2025-004",
+      "amount": 12750,
+      "status": "shipped",
+      "date": "2025-09-10",
+      "customer": "Delta Corp"
+    },
+    {
+      "id": "ORD-2025-005",
+      "amount": 18500,
+      "status": "completed",
+      "date": "2025-09-15",
+      "customer": "Echo Enterprises"
+    },
+    {
+      "id": "ORD-2025-006",
+      "amount": 9200,
+      "status": "pending",
+      "date": "2025-09-18",
+      "customer": "Foxtrot Inc"
+    }
+  ],"topCustomers": [
+    {
+      "name": "Enterprise Solutions Ltd",
+      "joinDate": "2023-03-15",
+      "totalOrders": 24,
+      "lifetimeValue": 185000,
+      "lastOrder": "2025-08-28",
+      "isVIP": true,
+      "recentOrders": [
+        {
+          "id": "ORD-2025-078",
+          "amount": 15600,
+          "date": "2025-08-28",
+          "status": "Completed"
+        },
+        {
+          "id": "ORD-2025-063",
+          "amount": 8900,
+          "date": "2025-08-15",
+          "status": "Completed"
+        },
+        {
+          "id": "ORD-2025-051",
+          "amount": 12300,
+          "date": "2025-07-30",
+          "status": "Completed"
+        }
+      ]
+    },
+    {
+      "name": "Global Tech Innovations",
+      "joinDate": "2022-11-08",
+      "totalOrders": 31,
+      "lifetimeValue": 225000,
+      "lastOrder": "2025-09-12",
+      "isVIP": true,
+      "recentOrders": [
+        {
+          "id": "ORD-2025-089",
+          "amount": 22000,
+          "date": "2025-09-12",
+          "status": "Shipped"
+        },
+        {
+          "id": "ORD-2025-074",
+          "amount": 18500,
+          "date": "2025-08-22",
+          "status": "Completed"
+        }
+      ]
+    },
+    {
+      "name": "Digital Dynamics Corp",
+      "joinDate": "2024-01-20",
+      "totalOrders": 18,
+      "lifetimeValue": 142000,
+      "lastOrder": "2025-08-18",
+      "isVIP": false,
+      "recentOrders": [
+        {
+          "id": "ORD-2025-067",
+          "amount": 9800,
+          "date": "2025-08-18",
+          "status": "Completed"
+        },
+        {
+          "id": "ORD-2025-055",
+          "amount": 13200,
+          "date": "2025-08-02",
+          "status": "Completed"
+        }
+      ]
+    },
+    {
+      "name": "Future Systems Inc",
+      "joinDate": "2023-07-12",
+      "totalOrders": 29,
+      "lifetimeValue": 198000,
+      "lastOrder": "2025-09-20",
+      "isVIP": true,
+      "recentOrders": [
+        {
+          "id": "ORD-2025-095",
+          "amount": 17800,
+          "date": "2025-09-20",
+          "status": "Processing"
+        }
+      ]
+    }
+  ],
+  "tags": ["Technology", "Innovation", "Growth", "Excellence"],
+  "currentDate": "2025-09-02T14:45:30Z",
+  "documentId": "HBL-LOAN-DOC-20250902-001234",
+  "templateVersion": "3.2.1",
+  "testNull" : "no null"
+}
