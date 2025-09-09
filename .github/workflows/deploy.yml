@@ -30,7 +30,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} <<'SSH_EOF'
             set -e
             # set variables (on remote)
-            TARGET_DIR="${SERVER_PATH:-~/docx-template-engine}"
+            TARGET_DIR="${SERVER_PATH:-~/docx-nodejs}"
 
             if [ ! -d "$TARGET_DIR" ]; then
               echo "Target not found. Cloning repo into $TARGET_DIR"
