@@ -8,7 +8,7 @@ async function checkHealth() {
       statusEl.textContent = "✅ Backend Online";
       statusEl.className = "status ok";
     } else {
-      statusEl.textContent = "❌ Backend Error";
+      statusEl.textContent = "❌ Backend Errors";
       statusEl.className = "status down";
     }
   } catch (err) {
