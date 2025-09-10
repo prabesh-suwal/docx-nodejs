@@ -34,7 +34,7 @@ jobs:
 
             if [ ! -d "$TARGET_DIR" ]; then
               echo "Target not found. Cloning repo into $TARGET_DIR"
-              git clone https://github.com/${GITHUB_REPOSITORY}.git "$TARGET_DIR"
+              git clone https://github.com/prabesh-suwal/docx-nodejs.git "$TARGET_DIR"
             fi
 
             cd "$TARGET_DIR"
