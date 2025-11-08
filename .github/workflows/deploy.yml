@@ -23,7 +23,13 @@ jobs:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
           ENV_PRODUCTION: ${{ secrets.ENV_PRODUCTION }}
-        run: |          
+        run: |
+          echo "SERVER_USER: ${SERVER_USER}"
+          echo "SERVER_HOST: ${SERVER_HOST}"
+          echo "SERVER_PATH: ${SERVER_PATH}"
+          echo "ENV_PRODUCTION (masked): ${ENV_PRODUCTION:0:5}****"
+          echo "Deploying to ${SERVER_USER}@${SERVER_HOST}:${SERVER_PATH}"
+          
           # Ensure server_dir exists and is a git repo; clone if missing
           ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} <<SSH_EOF
             set -e
