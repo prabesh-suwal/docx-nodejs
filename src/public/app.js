@@ -5,7 +5,7 @@ async function checkHealth() {
   try {
     const res = await fetch(`/api/health`);
     if (res.ok) {
-      statusEl.textContent = "✅ Backend Online";
+      statusEl.textContent = "✅ Backend Online v-1.0.0";
       statusEl.className = "status ok";
     } else {
       statusEl.textContent = "❌ Backend Errors";
