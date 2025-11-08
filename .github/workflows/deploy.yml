@@ -23,19 +23,12 @@ jobs:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
           ENV_PRODUCTION: ${{ secrets.ENV_PRODUCTION }}
-        run: |
-          echo "SERVER_USER: ${SERVER_USER}"
-          echo "SERVER_HOST: ${SERVER_HOST}"
-          echo "SERVER_PATH: ${SERVER_PATH}"
-          echo "ENV_PRODUCTION (masked): ${ENV_PRODUCTION:0:5}****"
-          echo "Deploying to ${SERVER_USER}@${SERVER_HOST}:${SERVER_PATH}"
-          
+        run: |          
+          # Ensure server_dir exists and is a git repo; clone if missing
           ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} <<SSH_EOF
             set -e
-            echo "Server path received: ${SERVER_PATH}"
-            
+            # set variables (on remote)
             TARGET_DIR="${SERVER_PATH:-~/docx-nodejs}"
-            echo "Using target directory: $TARGET_DIR"
 
             if [ ! -d "$TARGET_DIR" ]; then
               echo "Target not found. Cloning repo into $TARGET_DIR"
@@ -43,12 +36,12 @@ jobs:
             fi
 
             cd "$TARGET_DIR"
-            echo "Current directory: $(pwd)"
 
+            # Reset local changes and update
             git fetch --all --prune
             git reset --hard origin/main
-            git status
 
+            # If a .env.prod file exists in repo, copy to .env; otherwise use ENV_PRODUCTION (written by actions)
             if [ -f .env.qa ]; then
               cp .env.qa .env
             elif [ -n "$ENV_PRODUCTION" ]; then
@@ -56,7 +49,12 @@ jobs:
               chmod 600 .env
             fi
 
+            # install production deps
             npm install --production
+
+            # restart app with pm2 (start if not running)
             pm2 restart docx-template-engine || pm2 start npm --name docx-template-engine -- start
+
+            # save pm2 list for startup
             pm2 save
           SSH_EOF
