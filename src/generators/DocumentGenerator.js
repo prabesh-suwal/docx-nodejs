@@ -200,6 +200,8 @@ async validateDocxBuffer(buffer) {
                 .replace(/['']/g, "'") // Replace smart apostrophes
                 .replace(/[–—]/g, '-') // Replace en/em dashes
                 .replace(/\u00A0/g, ' ') // Replace non-breaking spaces
+                .replace(/\u00A0/g, " ") 
+                .replace(/[\u200B-\u200D\uFEFF]/g, "")
                 .trim();
         }
 

@@ -11,6 +11,23 @@ class TemplateEngine {
         // Register custom modules
         this.modules = [];
         this.setupDefaultModules();
+        
+        // Debug mode flag
+        this.debug = true;
+    }
+    
+    // Helper method to extract and display template variables
+    debugShowTemplateMarkers(xml) {
+        if (!this.debug) return;
+        
+        const variableRegex = /\$\{[^}]+\}/g;
+        const matches = xml.match(variableRegex) || [];
+        
+        console.log('\n📌 Template markers found:');
+        matches.forEach((marker, index) => {
+            console.log(`${index + 1}. ${marker}`);
+        });
+        console.log('');
     }
 
     setupDefaultModules() {
@@ -126,6 +143,68 @@ class TemplateEngine {
     }
 
 
+   
+    cleanWordXmlLikeLibreOffice(xml) {
+    console.log('🧹 Cleaning Word XML (LibreOffice-style)...');
+    
+    // 1. Remove Microsoft Word revision tracking attributes
+    xml = xml.replace(/\s+w:rsidR="[^"]*"/g, '');
+    xml = xml.replace(/\s+w:rsidRDefault="[^"]*"/g, '');
+    xml = xml.replace(/\s+w:rsidP="[^"]*"/g, '');
+    xml = xml.replace(/\s+w:rsidRPr="[^"]*"/g, '');
+    xml = xml.replace(/\s+w:rsidDel="[^"]*"/g, '');
+    xml = xml.replace(/\s+w:rsidTr="[^"]*"/g, '');
+    xml = xml.replace(/\s+w14:paraId="[^"]*"/g, '');
+    xml = xml.replace(/\s+w14:textId="[^"]*"/g, '');
+    
+    // 2. Remove spell check and grammar markers
+    xml = xml.replace(/<w:proofErr[^>]*\/>/g, '');
+    
+    // 3. Merge consecutive text runs (the key part!)
+    // Pattern: </w:t></w:r> followed by <w:r [attributes]><w:t [attributes]>
+    let iterations = 0;
+    let previousLength;
+    
+    do {
+        previousLength = xml.length;
+        
+        // Merge runs with attributes
+        xml = xml.replace(
+            /<\/w:t><\/w:r><w:r\s+[^>]*><w:t>/g,
+            ''
+        );
+        
+        // Merge runs without attributes
+        xml = xml.replace(
+            /<\/w:t><\/w:r><w:r><w:t>/g,
+            ''
+        );
+        
+        // Merge runs with xml:space attribute
+        xml = xml.replace(
+            /<\/w:t><\/w:r><w:r[^>]*><w:t\s+xml:space="preserve">/g,
+            ''
+        );
+        
+        iterations++;
+        
+        // Safety check to prevent infinite loops
+        if (iterations > 20) {
+            console.warn('⚠️  Stopped merging after 20 iterations');
+            break;
+        }
+        
+    } while (xml.length < previousLength); // Continue while we're making changes
+    
+    // 4. Clean up empty runs
+    xml = xml.replace(/<w:r><\/w:r>/g, '');
+    xml = xml.replace(/<w:r\s+[^>]*><\/w:r>/g, '');
+    xml = xml.replace(/<w:r><w:rPr\/><\/w:r>/g, '');
+    
+    console.log(`✅ XML cleaned (${iterations} merge iterations)`);
+    
+    return xml;
+}   
 
 
     // Custom template processing for complex syntax
@@ -134,7 +213,19 @@ class TemplateEngine {
         const zip = new PizZip(templateBuffer);
         
         // Extract document.xml
-        const documentXml = zip.files['word/document.xml'].asText();
+        let documentXml = zip.files['word/document.xml'].asText();
+        // Added for cleaning windows ms word prepared template        
+        documentXml = this.cleanWordXmlLikeLibreOffice(documentXml);
+
+        
+        // Show all template markers for debugging
+        this.debugShowTemplateMarkers(documentXml);
+        
+        // Debug log to show full document content
+        // console.log('📄 Full document content:');
+        // console.log('='.repeat(80));
+        // console.log(documentXml);
+        // console.log('='.repeat(80));
         
         console.log('🔄 Starting enhanced template processing pipeline...');
         
