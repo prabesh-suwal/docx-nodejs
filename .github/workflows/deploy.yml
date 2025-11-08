@@ -24,6 +24,10 @@ jobs:
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
           ENV_PRODUCTION: ${{ secrets.ENV_PRODUCTION }}
         run: |
+          echo "SERVER_USER: ${SERVER_USER}"
+          echo "SERVER_HOST: ${SERVER_HOST}"
+          echo "SERVER_PATH: ${SERVER_PATH}"
+          echo "ENV_PRODUCTION (masked): ${ENV_PRODUCTION:0:5}****"
           echo "Deploying to ${SERVER_USER}@${SERVER_HOST}:${SERVER_PATH}"
           
           # Ensure server_dir exists and is a git repo; clone if missing
