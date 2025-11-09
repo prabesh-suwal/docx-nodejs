@@ -22,21 +22,22 @@ jobs:
           SERVER_USER: ${{ vars.SERVER_USER }}
           SERVER_HOST: ${{ vars.SERVER_HOST }}
           SERVER_PATH: ${{ vars.SERVER_PATH }}
-          ENV_PRODUCTION: ${{ vars.ENV_PRODUCTION }}
+          ENV_PRODUCTION: ${{ secrets.ENV_PRODUCTION }}
         run: |
-          echo "SERVER_USER: ${SERVER_USER}"
-          echo "SERVER_HOST: ${SERVER_HOST}"
-          echo "SERVER_PATH: ${SERVER_PATH}"
-          echo "ENV_PRODUCTION (masked): ${ENV_PRODUCTION:0:5}****"
+          echo "=== Deployment Info ==="
+          echo "User: ${SERVER_USER}"
+          echo "Host: ${SERVER_HOST}"
+          echo "Path: ${SERVER_PATH:-~/docx-nodejs}"
+          echo "========================"
+
           echo "Deploying to ${SERVER_USER}@${SERVER_HOST}:${SERVER_PATH}"
           
           # Ensure server_dir exists and is a git repo; clone if missing
-          ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} <<SSH_EOF
+          ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} <<'SSH_EOF'
             set -e
             # set variables (on remote)
             TARGET_DIR="${SERVER_PATH:-~/docx-nodejs}"
-            echo "TARGET_DIR: ${TARGET_DIR}"
-
+            echo "Path: ${TARGET_DIR}"
 
             if [ ! -d "$TARGET_DIR" ]; then
               echo "Target not found. Cloning repo into $TARGET_DIR"
