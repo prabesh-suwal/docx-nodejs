@@ -35,6 +35,8 @@ jobs:
             set -e
             # set variables (on remote)
             TARGET_DIR="${SERVER_PATH:-~/docx-nodejs}"
+            echo "TARGET_DIR: ${TARGET_DIR}"
+
 
             if [ ! -d "$TARGET_DIR" ]; then
               echo "Target not found. Cloning repo into $TARGET_DIR"
