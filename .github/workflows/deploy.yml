@@ -47,17 +47,8 @@ jobs:
             cd "$TARGET_DIR"
 
             # Reset local changes and update
-            echo "Fetching latest changes..."
-            # This will print full remote output
-            git fetch --all --prune 2>&1 | tee /tmp/git_fetch.log
-
-            echo "--- Fetch Output ---"
-            cat /tmp/git_fetch.log
-            echo "--------------------"
-
+            git fetch --all --prune
             git reset --hard origin/main
-
-            git status -s
 
             # If a .env.prod file exists in repo, copy to .env; otherwise use ENV_PRODUCTION (written by actions)
             if [ -f .env.qa ]; then
