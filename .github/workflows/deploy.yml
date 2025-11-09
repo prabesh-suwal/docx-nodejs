@@ -33,11 +33,11 @@ jobs:
           echo "Deploying to ${SERVER_USER}@${SERVER_HOST}:${SERVER_PATH}"
           
           # Ensure server_dir exists and is a git repo; clone if missing
-          ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} <<'SSH_EOF'
+          ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} <<SSH_EOF
             set -e
             # set variables (on remote)
             TARGET_DIR="${SERVER_PATH:-~/docx-nodejs}"
-            echo "Path: ${TARGET_DIR}"
+            echo "TARGET_DIR: ${TARGET_DIR}"
 
             if [ ! -d "$TARGET_DIR" ]; then
               echo "Target not found. Cloning repo into $TARGET_DIR"
@@ -47,8 +47,17 @@ jobs:
             cd "$TARGET_DIR"
 
             # Reset local changes and update
-            git fetch --all --prune
+            echo "Fetching latest changes..."
+            # This will print full remote output
+            git fetch --all --prune 2>&1 | tee /tmp/git_fetch.log
+
+            echo "--- Fetch Output ---"
+            cat /tmp/git_fetch.log
+            echo "--------------------"
+
             git reset --hard origin/main
+
+            git status -s
 
             # If a .env.prod file exists in repo, copy to .env; otherwise use ENV_PRODUCTION (written by actions)
             if [ -f .env.qa ]; then
