@@ -19,10 +19,10 @@ jobs:
 
       - name: Deploy to server via SSH
         env:
-          SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_PATH: ${{ secrets.SERVER_PATH }}
-          ENV_PRODUCTION: ${{ secrets.ENV_PRODUCTION }}
+          SERVER_USER: ${{ vars.SERVER_USER }}
+          SERVER_HOST: ${{ vars.SERVER_HOST }}
+          SERVER_PATH: ${{ vars.SERVER_PATH }}
+          ENV_PRODUCTION: ${{ vars.ENV_PRODUCTION }}
         run: |
           echo "SERVER_USER: ${SERVER_USER}"
           echo "SERVER_HOST: ${SERVER_HOST}"
