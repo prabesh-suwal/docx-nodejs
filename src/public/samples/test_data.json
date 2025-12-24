@@ -1,7 +1,7 @@
 {
   "bank": {
     "name": "Himalayan Bank Limited",
-	 "nameNepali": "हिमालयन बैंक लिमिटेड",
+    "nameNepali": "हिमालयन बैंक लिमिटेड",
     "address": "Kamaladi, Kathmandu, Nepal",
     "phone": "+977-1-4411681",
     "email": "info@himalayanbank.com",
@@ -64,14 +64,24 @@
       "description": "2025 Toyota Land Cruiser Prado VX 2.8L Diesel 4WD",
       "estimatedValue": 4200000,
       "location": "Kathmandu, Nepal",
-      "registrationNumber": "Ba 12 Pa 5678"
+      "registrationNumber": "Ba 12 Pa 5678",
+      "collateralOwner": {
+        "type": "Individual",
+        "nameNepali": "शिव नारायण चौधरी",
+        "name": "Shiva Narayan Chaudhary"
+      }
     },
     {
       "type": "Property",
       "description": "Land and House at Bhaktapur (2 Ropani 5 Aana)",
       "estimatedValue": 8500000,
       "location": "Ward No. 5, Bhaktapur Municipality",
-      "registrationNumber": "15-02-75-0987"
+      "registrationNumber": "15-02-75-0987",
+      "collateralOwner": {
+        "type": "Institute",
+        "nameNepali": "राम",
+        "name": "Ram"
+      }
     }
   ],
   "paymentSchedule": [
@@ -85,7 +95,7 @@
     },
     {
       "month": 2,
-      "paymentDate": "2025-11-02", 
+      "paymentDate": "2025-11-02",
       "principal": 31288,
       "interest": 27462,
       "emiAmount": 58750,
@@ -225,7 +235,7 @@
       "customer": "Acme Corp"
     },
     {
-      "id": "ORD-2025-002", 
+      "id": "ORD-2025-002",
       "amount": 8500,
       "status": "pending",
       "date": "2025-08-20",
@@ -234,7 +244,7 @@
     {
       "id": "ORD-2025-003",
       "amount": 22000,
-      "status": "completed", 
+      "status": "completed",
       "date": "2025-09-01",
       "customer": "Gamma Systems"
     },
@@ -259,7 +269,8 @@
       "date": "2025-09-18",
       "customer": "Foxtrot Inc"
     }
-  ],"topCustomers": [
+  ],
+  "topCustomers": [
     {
       "name": "Enterprise Solutions Ltd",
       "joinDate": "2023-03-15",
@@ -272,19 +283,52 @@
           "id": "ORD-2025-078",
           "amount": 15600,
           "date": "2025-08-28",
-          "status": "Completed"
+          "status": "Completed",
+          "details": [
+            {
+              "address": "Kathmandu"
+            },
+            {
+              "address": "Bagmati"
+            },
+            {
+              "address": "Nepal"
+            }
+          ]
         },
         {
           "id": "ORD-2025-063",
           "amount": 8900,
           "date": "2025-08-15",
-          "status": "Completed"
+          "status": "Completed",
+          "details": [
+            {
+              "address": "Lalitpur"
+            },
+            {
+              "address": "Bagmati"
+            },
+            {
+              "address": "Nepal"
+            }
+          ]
         },
         {
           "id": "ORD-2025-051",
           "amount": 12300,
           "date": "2025-07-30",
-          "status": "Completed"
+          "status": "Completed",
+          "details": [
+            {
+              "address": "Bhaktapur"
+            },
+            {
+              "address": "Bagmati"
+            },
+            {
+              "address": "Nepal"
+            }
+          ]
         }
       ]
     },
@@ -300,13 +344,35 @@
           "id": "ORD-2025-089",
           "amount": 22000,
           "date": "2025-09-12",
-          "status": "Shipped"
+          "status": "Shipped",
+          "details": [
+            {
+              "address": "Kathmandu"
+            },
+            {
+              "address": "Bagmati"
+            },
+            {
+              "address": "Nepal"
+            }
+          ]
         },
         {
           "id": "ORD-2025-074",
           "amount": 18500,
           "date": "2025-08-22",
-          "status": "Completed"
+          "status": "Completed",
+          "details": [
+            {
+              "address": "Pokhara"
+            },
+            {
+              "address": "Province 3"
+            },
+            {
+              "address": "Nepal"
+            }
+          ]
         }
       ]
     },
@@ -322,13 +388,35 @@
           "id": "ORD-2025-067",
           "amount": 9800,
           "date": "2025-08-18",
-          "status": "Completed"
+          "status": "Completed",
+          "details": [
+            {
+              "address": "Kathmandu"
+            },
+            {
+              "address": "Bagmati"
+            },
+            {
+              "address": "Nepal"
+            }
+          ]
         },
         {
           "id": "ORD-2025-055",
           "amount": 13200,
           "date": "2025-08-02",
-          "status": "Completed"
+          "status": "Completed",
+          "details": [
+            {
+              "address": "Kathmandu"
+            },
+            {
+              "address": "Bagmati"
+            },
+            {
+              "address": "Nepal"
+            }
+          ]
         }
       ]
     },
@@ -344,14 +432,30 @@
           "id": "ORD-2025-095",
           "amount": 17800,
           "date": "2025-09-20",
-          "status": "Processing"
+          "status": "Processing",
+          "details": [
+            {
+              "address": "Kathmandu"
+            },
+            {
+              "address": "Bagmati"
+            },
+            {
+              "address": "Nepal"
+            }
+          ]
         }
       ]
     }
   ],
-  "tags": ["Technology", "Innovation", "Growth", "Excellence"],
+  "tags": [
+    "Technology",
+    "Innovation",
+    "Growth",
+    "Excellence"
+  ],
   "currentDate": "2025-09-02T14:45:30Z",
   "documentId": "HBL-LOAN-DOC-20250902-001234",
   "templateVersion": "3.2.1",
-  "testNull" : "no null"
+  "testNull": "no null"
 }
